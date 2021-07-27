@@ -17,8 +17,8 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore GithubActionsTestProjectDotNet/GithubActionsTestProjectDotNet/Calculator.csproj
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build GithubActionsTestProjectDotNet/GithubActionsTestProjectDotNet/Calculator.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity normal
