@@ -31,7 +31,7 @@ jobs:
         run: echo "The report is ${{ steps.xunit-viewer.outputs.report-file }}"    
       - name: Test
         run: |
-            [ ${{ steps.xunit-viewer.outputs.report-file }} == "GithubActionsTestProjectDotNet/index.html" ]
+            [ ${{ steps.xunit-viewer.outputs.report-file }} == "./index.html" ]
       - name: Attach the report
         if: always()
         uses: actions/upload-artifact@v1
