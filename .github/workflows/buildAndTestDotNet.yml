@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: dotnet build GithubActionsTestProjectDotNet/GithubActionsTestProjectDotNet/Calculator.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity detailed
+        run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity normal
       - name: XUnit Viewer
         uses: AutoModality/action-xunit-viewer@v1  #use the current project relative to root
         id: xunit-viewer
@@ -31,7 +31,7 @@ jobs:
         run: echo "The report is ${{ steps.xunit-viewer.outputs.report-file }}"    
       - name: Test
         run: |
-            [ ${{ steps.xunit-viewer.outputs.report-file }} == "./index.html" ]
+            [ ${{ steps.xunit-viewer.outputs.report-file }} == "GithubActionsTestProjectDotNet/index.html" ]
       - name: Attach the report
         if: always()
         uses: actions/upload-artifact@v1
