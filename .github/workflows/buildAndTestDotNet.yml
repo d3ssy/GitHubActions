@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: dotnet build GithubActionsTestProjectDotNet/GithubActionsTestProjectDotNet/Calculator.csproj --configuration Release --no-restore
       - name: Test
-        run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity normal -xml ./test-reports/index.xml
+        run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity normal
       - name: Test Report
         uses: zyborg/dotnet-tests-report@v1
         with:
