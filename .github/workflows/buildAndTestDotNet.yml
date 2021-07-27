@@ -24,7 +24,6 @@ jobs:
         run: dotnet build GithubActionsTestProjectDotNet/GithubActionsTestProjectDotNet/Calculator.csproj --configuration Release --no-restore
       - name: Test
         run: dotnet test GithubActionsTestProjectDotNet/CalculatorTests/CalculatorTests.csproj --no-restore --verbosity normal
-      
       - name: XUnit Viewer
       - id: xunit-viewer
         uses: AutoModality/action-xunit-viewer@v1  #use the current project relative to root
