@@ -13,7 +13,7 @@ env:
   # Project name to pack and publish
   PROJECT_NAME: Calculator
   # GitHub Packages Feed settings
-  GITHUB_FEED: https://api.github.com/d3ssy/GitHubActions/packages #https://nuget.pkg.github.com/d3ssy/index.json
+  GITHUB_FEED: https://github.com/d3ssy/GitHubActions/packages #https://nuget.pkg.github.com/d3ssy/index.json
   GITHUB_USER: d3ssy
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Official NuGet Feed settings
@@ -51,12 +51,10 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: nupkg
-      - name: Push to GitHub Feed
-        run: |
-          for f in ./nupkg/*.nupkg
-          do
-            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
-          done
+      - name: 📑 Dotnet NuGet Add Source
+        run: dotnet nuget add source --username GITHUB_USER --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/d3ssy/index.json"
+      - name: 🚀 Publish the package
+        run: dotnet nuget push nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
   deploy:
     needs: build
     if: github.event_name == 'release'
