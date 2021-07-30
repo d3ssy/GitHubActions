@@ -19,7 +19,7 @@
         public static double Divide(int a, int b)
         {
             //Fail test to trigger failure in CI pipeline.
-            return a * b + a;
+            return a / b;
         }
     }
 }
