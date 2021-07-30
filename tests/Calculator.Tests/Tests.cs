@@ -1,3 +1,4 @@
+using System;
 using Calculator;
 using Xunit;
 
@@ -58,7 +59,7 @@ namespace CalculatorTests
             var result = SuperCalculator.Divide(a, b);
 
             //Assert
-            Assert.True(result == 0.75);
+            Assert.True(Math.Abs(result - 0.75) < 1e-6);
         }
 
 
