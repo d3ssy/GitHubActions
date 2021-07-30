@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+    <Version>$(Version)</Version>
+    <PackageId>GitHubActionsCiPipeline</PackageId>
+    <!-- if it is not defined use the AssemblyName property -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/d3ssy/GitHubActions</PackageProjectUrl>
+    <PackageDescription>CI pipeline with gitHub actions.</PackageDescription>
+    <PackageTags>gitactions, release, templates</PackageTags>
+    <RepositoryUrl>https://github.com/d3ssy/GitHubActions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>  
 
 </Project>
