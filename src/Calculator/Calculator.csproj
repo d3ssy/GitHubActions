@@ -11,6 +11,5 @@
     <PackageTags>gitactions, release, templates</PackageTags>
     <RepositoryUrl>https://github.com/d3ssy/GitHubActions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-  </PropertyGroup>  
-
+  </PropertyGroup>
 </Project>
