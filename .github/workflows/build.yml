@@ -54,7 +54,7 @@ jobs:
       - name: 📑 Dotnet NuGet Add Source
         run: dotnet nuget add source --username GITHUB_USER --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/d3ssy/index.json"
       - name: 🚀 Publish the package
-        run: dotnet nuget push nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+        run: dotnet nuget push ./nupkg/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
   deploy:
     needs: build
     if: github.event_name == 'release'
