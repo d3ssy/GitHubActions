@@ -36,7 +36,6 @@ jobs:
       - name: Test
         run: dotnet test -c Release
       - name: Pack
-        if: matrix.os == 'ubuntu-latest'
         run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.*proj
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
@@ -67,7 +66,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.100
+          dotnet-version: 3.1
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
