@@ -44,22 +44,6 @@ jobs:
           name: nupkg
           path: ./src/${{ env.PROJECT_NAME }}/bin/Release/*.nupkg
           
-  pre-release:
-    needs: build
-    if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: nupkg
-      - name: Push to GitHub Feed
-        run: |
-          for f in ./nupkg/*.nupkg
-          do
-            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
-          done
-  
   bump-tag-on-main:
     needs: build
     if: github.ref == 'refs/heads/main'
@@ -72,6 +56,22 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           
+  pre-release:
+    needs: [build,  bump-tag-on-main]
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+      - name: Push to GitHub Feed
+        run: |
+          for f in ./nupkg/*.nupkg
+          do
+            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+          done 
+         
   release-candidate:
     needs: build
     if: github.ref == 'refs/heads/main'
