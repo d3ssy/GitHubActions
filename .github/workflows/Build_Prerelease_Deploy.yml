@@ -30,7 +30,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: $NET_VERSION
+          dotnet-version: ${{env.NET_VERSION}}
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -75,7 +75,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: $NET_VERSION
+          dotnet-version: ${{env.NET_VERSION}}
       - name: Create Release NuGet package
         run: |
           VERSION = ${{ steps.tag_version.outputs.new_tag }}-rc
@@ -98,7 +98,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: $NET_VERSION
+          dotnet-version: ${{env.NET_VERSION}}
       - name: Create Release NuGet package
         run: |
           arrTag=(${GITHUB_REF//\// })
