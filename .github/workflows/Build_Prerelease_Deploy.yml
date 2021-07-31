@@ -57,7 +57,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           
   pre-release:
-    needs: [build,  bump-tag-on-main]
+    needs: [build]
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
@@ -73,7 +73,7 @@ jobs:
           done 
          
   release-candidate:
-    needs: build
+    needs: [build,  bump-tag-on-main]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -98,9 +98,8 @@ jobs:
           done
       - name: Push to NuGet Feed
         run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
-
   
-  deploy:
+  release:
     needs: build
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
