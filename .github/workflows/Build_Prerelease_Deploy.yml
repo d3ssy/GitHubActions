@@ -36,14 +36,7 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Test
         run: dotnet test -c Release
-      - name: Pack
-        run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.*proj
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: nupkg
-          path: ./src/${{ env.PROJECT_NAME }}/bin/Release/*.nupkg
-          
+        
   bump-tag:
     needs: build
     runs-on: ubuntu-latest
@@ -61,23 +54,34 @@ jobs:
           PRERELEASE_SUFFIX: alpha       
                     
   pre-release:
-    needs: build
+    needs: [build,  bump-tag]
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
         with:
-          name: nupkg
+          dotnet-version: 3.1
+      - name: Create Release NuGet package
+        run: |
+          arrTag=(${GITHUB_REF//\// })
+          VERSION="${arrTag[2]}"
+          echo Version: $VERSION
+          VERSION="${VERSION//v}-rc" #append -rc to version tag to mark release canditate
+          echo Clean Version: $VERSION
+          dotnet pack -v normal -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -o nupkg src/$PROJECT_NAME/$PROJECT_NAME.*proj
       - name: Push to GitHub Feed
         run: |
           for f in ./nupkg/*.nupkg
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
-          done 
+          done
+      - name: Push to NuGet Feed
+        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
          
   release-candidate:
-    needs: [build,  bump-tag-on-main]
+    needs: [build,  bump-tag]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
